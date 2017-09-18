@@ -34,6 +34,41 @@ h1 {
 }
 
 /*
+ * Animations
+ * Took from https://github.com/daneden/animate.css
+ */
+
+ @keyframes mismatch {
+   from {
+     transform: none;
+   }
+
+   15% {
+     transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+   }
+
+   30% {
+     transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+   }
+
+   45% {
+     transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+   }
+
+   60% {
+     transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+   }
+
+   75% {
+     transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+   }
+
+   to {
+     transform: none;
+   }
+ }
+
+/*
  * Styles for the deck of cards
  */
 
@@ -71,6 +106,7 @@ h1 {
     transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
+    transition: transform 0.15s cubic-bezier(.43,.63,.99,.17);
 }
 
 .deck .card.show {
@@ -81,6 +117,13 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+}
+
+.deck .card.open.mismatch {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-name: mismatch;
+  background: #ac0000;
 }
 
 /*
