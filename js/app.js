@@ -1,7 +1,10 @@
+// Take html elements from the dom
+let cardElements = document.getElementsByClassName( 'card' );
+
 /*
  * Create a list that holds all of your cards
  */
-var cardArray = document.getElementsByClassName( 'card' );
+let cards = [ 'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-diamond', 'fa-leaf', 'fa-paper-plane-o'];
 
 /*
  * Display the cards on the page
@@ -25,7 +28,9 @@ function shuffle(array) {
     return array;
 }
 
-shuffle( cardArray );
+function placeCards() {
+    let dandomCards = shuffle( cardArray );
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
