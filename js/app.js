@@ -1,10 +1,13 @@
 // Take html elements from the dom
-let cardElements = document.getElementsByClassName( 'card' );
+let cardElements = document.getElementsByClassName('card');
 
 /*
  * Create a list that holds all of your cards
  */
-let cards = [ 'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-diamond', 'fa-leaf', 'fa-paper-plane-o'];
+let symbolClasses = [
+    'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-diamond', 'fa-leaf', 'fa-paper-plane-o',
+    'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-diamond', 'fa-leaf', 'fa-paper-plane-o'
+];
 
 /*
  * Display the cards on the page
@@ -13,9 +16,26 @@ let cards = [ 'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-di
  *   - add each card's HTML to the page
  */
 
+const Cards = {
+    placeCards: function() {
+        let symbols = shuffle(symbolClasses);
+        for (let i = 0; i < cardElements.length; i++) {
+
+            // Creates the innerHTML to place inside html element with class 'card'
+            let theHtml = `<i class="card-icon fa ${symbols[ i ]}"></i>`;
+
+            // Add element inner html with created html
+            cardElements[i].innerHTML = theHtml;
+        }
+    }
+};
+
+Cards.placeCards();
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -26,10 +46,6 @@ function shuffle(array) {
     }
 
     return array;
-}
-
-function placeCards() {
-    let dandomCards = shuffle( cardArray );
 }
 
 /*
