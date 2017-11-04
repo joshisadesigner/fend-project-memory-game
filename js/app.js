@@ -30,6 +30,7 @@ const Cards = {
     }
 };
 
+// Shuffle cards everytime the page is reload
 Cards.placeCards();
 
 // Shuffle function from http://stackoverflow.com/a/2450976
