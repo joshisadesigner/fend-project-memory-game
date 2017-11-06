@@ -1,10 +1,16 @@
 // Take html elements from the dom
-let cardElements = document.getElementsByClassName('card');
+const cardElements = document.getElementsByClassName('card');
+
+// Variable to store flipped cards
+let cardsFlipped = [];
+
+// Variable to check if cards matched
+let match = false;
 
 /*
  * Create a list that holds all of your cards
  */
-let symbolClasses = [
+const symbolClasses = [
     'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-diamond', 'fa-leaf', 'fa-paper-plane-o',
     'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-diamond', 'fa-leaf', 'fa-paper-plane-o'
 ];
@@ -27,7 +33,66 @@ const Cards = {
             // Add element inner html with created html
             cardElements[i].innerHTML = theHtml;
         }
-    }
+        Cards.turnOver();
+    },
+
+    cardMatch: function() {
+        let match = true;
+        for ( let cards of cardsFlipped ) {
+            cards.className += ' match';
+        }
+    },
+
+    cardMismatch: function() {
+        let match = false;
+        for ( let cards of cardsFlipped ) {
+            cards.className += ' mismatch';
+        }
+    },
+
+    turnOverTimer: function( arrayOfCards ) {
+        setTimeout( function() {
+            let cards = arrayOfCards;
+            for( let card of cards ) {
+                card.classList = 'card';
+            }
+            cards.length = 0;
+        }, 1000 );
+    },
+
+    turnOver: function( ) {
+
+        // Iterate the existing cards
+        for ( let card of cardElements ) {
+
+            // Add Event Listener to clicked card
+            card.addEventListener('click', function() {
+
+                // console.log( card.childNodes[ 0 ].classList );
+
+                // Check if there are previous clicked cards
+                if ( cardsFlipped.length <= 1 )  {
+                    card.className += ' open show';
+
+                    // Add classes to reveal symbols
+                    cardsFlipped.push(card);
+
+                    if ( cardsFlipped.length === 2 ) {
+
+                        if ( cardsFlipped[ 0 ].childNodes[ 0 ].classList === cardsFlipped[ 1 ].childNodes[ 0 ].classList ) {
+                            Cards.cardMatch();
+                            cardsFlipped.length = 0;
+                        } else {
+                            Cards.cardMismatch();
+                            Cards.turnOverTimer( cardsFlipped );
+                        }
+                    }
+                }
+            });
+
+        }
+
+    },
 };
 
 // Shuffle cards everytime the page is reload
