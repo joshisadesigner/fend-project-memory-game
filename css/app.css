@@ -113,7 +113,7 @@ h1 {
     width: 125px;
     background: #2e3d49;
     font-size: 0;
-    color: #ffffff;
+    color: #2e3d49;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
@@ -128,6 +128,7 @@ h1 {
     transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
+    color: #ffffff;
     transition: transform 0.15s cubic-bezier(.43,.63,.99,.17);
 }
 

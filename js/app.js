@@ -68,18 +68,20 @@ const Cards = {
             // Add Event Listener to clicked card
             card.addEventListener('click', function() {
 
-                // console.log( card.childNodes[ 0 ].classList );
-
                 // Check if there are previous clicked cards
                 if ( cardsFlipped.length <= 1 )  {
                     card.className += ' open show';
 
                     // Add classes to reveal symbols
-                    cardsFlipped.push(card);
+                    cardsFlipped.push( card );
+                    console.log( card );
 
                     if ( cardsFlipped.length === 2 ) {
 
-                        if ( cardsFlipped[ 0 ].childNodes[ 0 ].classList === cardsFlipped[ 1 ].childNodes[ 0 ].classList ) {
+                        let cardOpenOne = cardsFlipped[ 0 ].childNodes[ 0 ].className;
+                        let cardOpenTwo = cardsFlipped[ 1 ].childNodes[ 0 ].className;
+
+                        if (  cardOpenOne === cardOpenTwo  ) {
                             Cards.cardMatch();
                             cardsFlipped.length = 0;
                         } else {
@@ -88,6 +90,7 @@ const Cards = {
                         }
                     }
                 }
+                ////// end if
             });
 
         }
