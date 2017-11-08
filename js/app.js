@@ -1,11 +1,17 @@
 // Take html elements from the dom
 const cardElements = document.getElementsByClassName('card');
 
-// Variable to store flipped cards
+// get modal
+const modal = document.getElementById( 'modal' );
+
+// get the restart button in modal
+const restart = document.getElementById( 'restart' );
+
+// Array variable to store flipped cards
 let cardsFlipped = [];
 
-// Variable to check if cards matched
-let match = false;
+// Array variable to check if all cards are matched
+let match = [];
 
 /*
  * Create a list that holds all of your cards
@@ -24,8 +30,20 @@ const symbolClasses = [
 
 const Cards = {
     placeCards: function() {
+        //hide modal for game won
+        modal.style.display = "none";
+
+        // clear array of matched cards
+        match = [];
+
+        //shuffle card symbols
         let symbols = shuffle(symbolClasses);
+
+        // Create the cards
         for (let i = 0; i < cardElements.length; i++) {
+
+            // clear card open show and match classes
+            cardElements[ i ].className = 'card';
 
             // Creates the innerHTML to place inside html element with class 'card'
             let theHtml = `<i class="card-icon fa ${symbols[ i ]}"></i>`;
@@ -33,70 +51,98 @@ const Cards = {
             // Add element inner html with created html
             cardElements[i].innerHTML = theHtml;
         }
-        Cards.turnOver();
+
+        // Call function on to activate card events
+        Cards.cardEvent();
     },
 
     cardMatch: function() {
-        let match = true;
-        for ( let cards of cardsFlipped ) {
-            cards.className += ' match';
+        // add match class to each flipped card and pushes the card to match array
+        for (let card of cardsFlipped) {
+            card.className += ' match';
+            match.push(card);
         }
+        //function to fire up modal
+        gameWon();
+        // reset array of flipped card to continue playing
+        cardsFlipped.length = 0;
     },
 
-    cardMismatch: function() {
-        let match = false;
-        for ( let cards of cardsFlipped ) {
-            cards.className += ' mismatch';
+    cardMismatch: function(arrayOfCards) {
+        // add mismatch class to each flipped card
+        for (let card of cardsFlipped) {
+            card.className += ' mismatch';
         }
-    },
 
-    turnOverTimer: function( arrayOfCards ) {
-        setTimeout( function() {
-            let cards = arrayOfCards;
-            for( let card of cards ) {
+        // set waiting time of 1s to remove open show classes to each flipped card
+        setTimeout(function() {
+            for (let card of cardsFlipped) {
                 card.classList = 'card';
             }
-            cards.length = 0;
-        }, 1000 );
+            // reset array of flipped card to continue playing
+            cardsFlipped.length = 0;
+        }, 1000);
     },
 
-    turnOver: function( ) {
+    flipCard: function(card) {
+
+        // Check if there are previous clicked cards
+        if (cardsFlipped.length <= 1 && card.className !== 'card open show') {
+            // Add open show classe to card icon
+            card.className += ' open show';
+
+            // Add classes to reveal symbols
+            cardsFlipped.push(card);
+
+            // if there are two card flipped check if they match or mismatch
+            if (cardsFlipped.length === 2) {
+
+                // Create variable that holds the class name of the childen of card elements
+                let cardOpenOne = cardsFlipped[0].childNodes[0].className;
+                let cardOpenTwo = cardsFlipped[1].childNodes[0].className;
+
+                if (cardOpenOne === cardOpenTwo) {
+                    Cards.cardMatch(cardsFlipped);
+                } else {
+                    Cards.cardMismatch(cardsFlipped);
+                }
+            }
+        }
+    },
+
+    cardEvent: function() {
 
         // Iterate the existing cards
-        for ( let card of cardElements ) {
+        for (let card of cardElements) {
 
             // Add Event Listener to clicked card
             card.addEventListener('click', function() {
 
-                // Check if there are previous clicked cards
-                if ( cardsFlipped.length <= 1 )  {
-                    card.className += ' open show';
-
-                    // Add classes to reveal symbols
-                    cardsFlipped.push( card );
-                    console.log( card );
-
-                    if ( cardsFlipped.length === 2 ) {
-
-                        let cardOpenOne = cardsFlipped[ 0 ].childNodes[ 0 ].className;
-                        let cardOpenTwo = cardsFlipped[ 1 ].childNodes[ 0 ].className;
-
-                        if (  cardOpenOne === cardOpenTwo  ) {
-                            Cards.cardMatch();
-                            cardsFlipped.length = 0;
-                        } else {
-                            Cards.cardMismatch();
-                            Cards.turnOverTimer( cardsFlipped );
-                        }
-                    }
+                // if card element contains class match it is already flipped
+                if (card.classList.contains('match')) {
+                    return;
+                } else {
+                    Cards.flipCard(card);
                 }
-                ////// end if
             });
 
         }
 
     },
+
+
+
 };
+
+    function gameWon() {
+        if (match.length === cardElements.length) {
+            modal.style.display = "block";
+        }
+    }
+
+    restart.addEventListener( 'click', function() {
+        Cards.placeCards();
+    });
 
 // Shuffle cards everytime the page is reload
 Cards.placeCards();

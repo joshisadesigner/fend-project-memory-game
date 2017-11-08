@@ -90,6 +90,63 @@ h1 {
   }
 }
 
+@keyframes bounceIn {
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    transform: scale3d(.9, .9, .9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    transform: scale3d(.97, .97, .97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+  animation-delay: .25s;
+}
+
+.bounceIn {
+  animation-name: bounceIn;
+}
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
 /*
  * Styles for the deck of cards
  */
@@ -177,4 +234,60 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.modal__backdrop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #000000;
+    background: rgba( 0, 0, 0, .8 );
+}
+
+.modal__box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.modal__icon {
+    font-size: 100px;
+    line-height: 1;
+    color: #f1b200;
+}
+
+.modal__title {
+    font-weight: bold;
+    color: #00a2b3;
+}
+
+.modal__action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__btn {
+    background: red;
+    border: 1px solid #008f9e;
+    border-radius: 3px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: #00a2b3;
+}
+
+.modal__btn:hover,
+.modal__btn:active,
+.modal__btn:focus {
+    box-shadow: 0 0 6px #000;
+    box-shadow: 0 4px 6px rgba( 0, 0, 0, .5 );
+    outline: none;
 }
