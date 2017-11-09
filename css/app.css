@@ -282,6 +282,7 @@ h1 {
     font-weight: bold;
     color: #fff;
     background: #00a2b3;
+    text-decoration: none;
 }
 
 .modal__btn:hover,
