@@ -315,28 +315,6 @@ const Timer = {
     }
 }
 
-
-
-// let letimer = setInterval( timeSeconds, 1000 );
-//
-// function timeSeconds(){
-//     sec++;
-//     if( sec > 59 ){ sec = 0 }
-//
-//     if( sec < 10 ){
-//         timerSeconds.innerText = `0${sec}`;
-//     } else {
-//         timerSeconds.innerText = sec;
-//     }
-// }
-
-// clearInterval(  );
-
-// call the timer
-// Timer.minutesAndSeconds( timerMinutes, timerSeconds );
-
-
-
 // restar the game with the modal button
 restartTheGame( restart );
 
