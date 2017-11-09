@@ -293,6 +293,10 @@ h1 {
     outline: none;
 }
 
+.timer {
+  text-align: center;
+}
+
 /* Small devices */
 @media (max-width: 768px) {
   

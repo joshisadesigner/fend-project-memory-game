@@ -222,6 +222,40 @@ function restartTheGame( e ){
     });
 }
 
+const timerMinutes = document.getElementById( 'timer-minutes' );
+const timerSeconds = document.getElementById( 'timer-seconds' );
+
+const Timer = {
+
+    time: function( interval, element ){
+        let sec = 0;
+        setInterval( function(){
+            sec++;
+            if( sec > 59 ){ sec = 0 }
+
+            if( sec < 10 ){
+                element.innerText = `0${sec}`;
+            } else {
+                element.innerText = sec;
+            }
+        }, interval );
+    },
+    
+    minutesAndSeconds: function( elementMinutes, elementSecons){
+        this.time( 60000, elementMinutes );
+        this.time( 1000, elementSecons );
+    },
+
+    clearTimer: function(){
+        // clearInterval( setInterval );
+    },
+}
+
+// call the timer
+Timer.minutesAndSeconds( timerMinutes, timerSeconds );
+
+
+
 // restar the game with the modal button
 restartTheGame( restart );
 
