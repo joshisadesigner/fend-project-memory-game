@@ -312,8 +312,6 @@ const Timer = {
     },
 
     resetTimerText: function(){
-        sec = 0;
-        min = 0;
         let textArray = [ timerSeconds, timerSecondsModal, timerMinutes, timerMinutesModal  ];
 
         for( let text of textArray ){
