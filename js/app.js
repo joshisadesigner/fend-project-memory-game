@@ -245,56 +245,60 @@ function restartTheGame( e ){
 
 // Varible for timer numbers
 let num = 0;
+let min = 0;
+let sec = 0;
 
 const Timer = {
-    // take 2 arguments corresponding to the html element for minutes and seconds
-    timerRestart: function( elementMinutes, elementSecons ){
-        // create array with arguments
-        let elementArray = [ elementMinutes, elementSecons ]
-        // change html text for each element
-        for( var e of elementArray ){
-            e.innerText = '00'
-        }
+
+    secondsIncrement: function(){
+        setInterval( function(){ 
+            sec++; 
+            // if one second have passed reset the num counter
+            if( sec === 60 ){ sec = 0 }
+            
+            //add leading 0 when the number is unit
+            if( sec < 10 ){
+                timerSeconds.innerText = `0${sec}`;
+            } else {
+                // display the generated number without leading 0
+                timerSeconds.innerText = sec;
+            }
+
+            if( sec != 1 ){
+                timerSecondsModal.innerText = `${sec} seconds`;
+            } else {
+                timerSecondsModal.innerText = sec;
+            }
+
+            console.log( sec ); 
+        }, 1000)
     },
+    
+    MinutesIncrement: function(){
+        setInterval( function(){ 
+            min++; 
+            // if one minute have passed reset the num counter
+            if( min === 60 ){ min = 0 }
+            
+            //add leading 0 when the number is unit
+            if( min < 10 ){
+                timerMinutes.innerText = `0${min}`;
+            } else {
+                // display the generated number without leading 0
+                timerMinutes.innerText = min;
+            }
 
-    timeProgress: function( element ){
-        // the number of the timer is updated
-        num++;
-        // if one second or minute have passed reset the num counter
-        if( num > 59 ){ num = 0 }
+            if( min != 1 ){
+                // output plural text
+                timerMinutesModal.innerText = `${min} minutes`;
+            } else {
+                // output singular text
+                timerMinutesModal.innerText = min;
+            }
 
-        //add leading 0 when the number is unit
-        if( num < 10 ){
-            element.innerText = `0${num}`;
-        } else {
-            // display the generated number without leading 0
-            element.innerText = num;
-        }
-        console.log( num );
+            console.log( min ); 
+        }, 60000)
     },
-
-    // outputs the minutes progress
-    minutesInterval: setInterval( function(){
-        Timer.timeProgress( timerMinutes );
-        let minutes = Number( timerMinutes.innerText )
-        if( minutes != 1 ){
-            timerMinutesModal.innerText = `${num} minutes and`;
-        } else{
-            timerMinutesModal.innerText = `${num} minute and`;
-        }
-    }, 1000 ),
-
-    // outputs the second progress
-    secondsInterval: setInterval( function(){
-        Timer.timeProgress( timerSeconds );
-        let seconds = Number( timerSeconds.innerText );
-        if( seconds != 1 ){
-            timerSecondsModal.innerText = `${num} seconds`;
-        } else {
-            timerSecondsModal.innerText = num;
-        }
-        // console.log( timerSeconds.innerText );
-    }, 1000 ),
 
 
     // stop timer and copy the timer progress to the modal
@@ -305,8 +309,19 @@ const Timer = {
         }
     },
 
+    // take 2 arguments corresponding to the html element for minutes and seconds
+    timerRestart: function( elementMinutes, elementSecons ){
+        // create array with arguments
+        let elementArray = [ elementMinutes, elementSecons ]
+        // change html text for each element
+        for( var e of elementArray ){
+            e.innerText = '00'
+        }
+    },
+
     resetTimerText: function(){
-        num = 0;
+        sec = 0;
+        min = 0;
         let textArray = [ timerSeconds, timerSecondsModal, timerMinutes, timerMinutesModal  ];
 
         for( let text of textArray ){
@@ -314,6 +329,8 @@ const Timer = {
         }
     }
 }
+Timer.secondsIncrement();
+Timer.MinutesIncrement();
 
 // restar the game with the modal button
 restartTheGame( restart );
