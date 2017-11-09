@@ -2,8 +2,8 @@
 
 ## How to play this application
 
-• Clone or download the [repository](https://github.com/joshisadesigner/fend-project-memory-game.git)
-• Open `index.html` on your default browser.
+* Clone or download the [repository](https://github.com/joshisadesigner/fend-project-memory-game.git)
+* Open `index.html` on your default browser.
 
 * [Instructions](#instructions)
 * [Contributing](#contributing)
