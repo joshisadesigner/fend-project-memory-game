@@ -34,9 +34,6 @@ const timerMinutesModal = document.getElementById( 'timer-minutes-modal' );
 // get seconds element in modal
 const timerSecondsModal = document.getElementById( 'timer-seconds-modal' );
 
-// Varible for timer numbers
-let num = 0;
-
 // Variable to store count of moves
 let moves = 0;
 
@@ -245,6 +242,10 @@ function restartTheGame( e ){
     });
 }
 
+
+// Varible for timer numbers
+let num = 0;
+
 const Timer = {
     // take 2 arguments corresponding to the html element for minutes and seconds
     timerRestart: function( elementMinutes, elementSecons ){
@@ -269,6 +270,7 @@ const Timer = {
             // display the generated number without leading 0
             element.innerText = num;
         }
+        console.log( num );
     },
 
     // outputs the minutes progress
@@ -276,11 +278,11 @@ const Timer = {
         Timer.timeProgress( timerMinutes );
         let minutes = Number( timerMinutes.innerText )
         if( minutes != 1 ){
-            timerMinutesModal.innerText = `${num} minutes`;
+            timerMinutesModal.innerText = `${num} minutes and`;
         } else{
-            timerMinutesModal.innerText = num;
+            timerMinutesModal.innerText = `${num} minute and`;
         }
-    }, 60000 ),
+    }, 1000 ),
 
     // outputs the second progress
     secondsInterval: setInterval( function(){
@@ -291,7 +293,6 @@ const Timer = {
         } else {
             timerSecondsModal.innerText = num;
         }
-
         // console.log( timerSeconds.innerText );
     }, 1000 ),
 
