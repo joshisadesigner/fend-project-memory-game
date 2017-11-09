@@ -16,15 +16,15 @@
         </header>
 
         <section class="score-panel">
-        	<ul class="stars">
+        	<ul id="stars" class="stars">
         		<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li>
         	</ul>
 
-        	<span class="moves">3</span> Moves
+        	<span id="moves">3</span> Moves
 
-            <div class="restart">
+            <div id="restartButton" class="restart">
         		<i class="fa fa-repeat"></i>
         	</div>
         </section>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="modal__info">
                     <h1 class="modal__title">Congratulations!<br>You Won!</h1>
-                    <p>With <span id="moves"></span> and 1 Star<br>Woooooo!</p>
+                    <p>With <span id="moves-result"></span> moves and <span id="stars-remain"></span> Star<br>Woooooo!</p>
                 </div>
                 <div class="modal__action">
                     <a href="#" id="restart" class="modal__btn">
