@@ -47,6 +47,10 @@ let cardsFlipped = [];
 // Array variable to check if all cards are matched
 let match = [];
 
+// Variable to check if the game is playing or stop
+let progressSeconds;
+let progressMinutes;
+
 /*
  * Create a list that holds all of your cards
  */
@@ -64,6 +68,15 @@ const symbolClasses = [
 
 const Cards = {
     placeCards: function() {
+        // star timer
+        Timer.starStopTime( true );
+
+        // Clear any flipped card
+        cardsFlipped = []
+
+        //clear moves
+        moves = 0;
+        
         //hide modal for game won
         modal.style.display = "none";
 
@@ -201,47 +214,48 @@ function reduceRanking() {
     if ( moves === 32 ){
         stars[ 2 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
-        console.log( ranking );
     }
 
     if ( moves === 52 ){
         stars[ 1 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
-        console.log( ranking );
     }
 
     if ( moves === 82 ){
         stars[ 0 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
-        console.log( ranking );
     }
 }
 
 function gameWon() {
     // When all cards are matched and flipped
     if (match.length === cardElements.length) {
+        // clear minutes in modal
+        timerMinutesModal.innerText = ``;
         // reveal the modal window
         modal.style.display = 'block';
         // change result text to moves varible
         movesResult.innerText = moves;
         // change stars text to starsRemain variable
         starsRemain.innerText = ranking;
-        // stop timer
-        Timer.stopTime( Timer.minutesIncrement, Timer.secondsIncrement );
+
+        // Stop timer
+        Timer.starStopTime( false );
     }
 }
 
 function restartTheGame( e ){
     e.addEventListener('click', function() {
+        // stop timer
+        Timer.starStopTime( false );
         // flip cards to original position
         // reset star ranking
         // reset moves
         Cards.placeCards();
-        // stop timer
+        // revert time to 0
         Timer.resetTimerText();
     });
 }
-
 
 // Varible for timer numbers
 let num = 0;
@@ -250,55 +264,67 @@ let sec = 0;
 
 const Timer = {
 
-    secondsIncrement: setInterval( function(){ 
-        sec++; 
-        // if one second have passed reset the num counter
-        if( sec === 60 ){ sec = 0 }
+    secondsManager: function( secondsFlag ){
+        if( secondsFlag ){
+            progressSeconds = setInterval( function(){ 
+                sec++; 
+                // if one seconds have passed reset the num counter
+                if( sec === 60 ){ sec = 0 }
+                
+                //add leading 0 when the number is unit
+                if( sec < 10 ){
+                    timerSeconds.innerText = `0${sec}`;
+                } else {
+                    // display the generated number without leading 0
+                    timerSeconds.innerText = sec;
+                }
         
-        //add leading 0 when the number is unit
-        if( sec < 10 ){
-            timerSeconds.innerText = `0${sec}`;
+                if( sec != 1 ){
+                    timerSecondsModal.innerText = `${sec} seconds`;
+                } else {
+                    timerSecondsModal.innerText = sec;
+                }
+                console.log( sec );
+            }, 1000 );
         } else {
-            // display the generated number without leading 0
-            timerSeconds.innerText = sec;
+            clearInterval( progressSeconds );
         }
-
-        if( sec != 1 ){
-            timerSecondsModal.innerText = `${sec} seconds`;
-        } else {
-            timerSecondsModal.innerText = sec;
-        }
-    }, 1000),
+    },
     
-    minutesIncrement: setInterval( function(){ 
-        min++; 
-        // if one minute have passed reset the num counter
-        if( min === 60 ){ min = 0 }
-        
-        //add leading 0 when the number is unit
-        if( min < 10 ){
-            timerMinutes.innerText = `0${min}`;
+    minutesManager: function( minutesFlag ){
+        if( minutesFlag ){
+            progressMinutes = setInterval( function(){ 
+                min++; 
+                // if one seconds have passed reset the num counter
+                if( min === 60 ){ min = 0 }
+                
+                //add leading 0 when the number is unit
+                if( min < 10 ){
+                    timerMinutes.innerText = `0${min}`;
+                } else {
+                    // display the generated number without leading 0
+                    timerMinutes.innerText = min;
+                }
+
+                if( min > 0 ){
+                    //add leading 0 when the number is unit
+                    if( min === 1 ){
+                        timerMinutesModal.innerText = ` ${min} minute`;
+                    } else if ( min > 1 ) {
+                        // display the generated number without leading 0
+                        timerMinutesModal.innerText = ` ${min} minutes`;
+                    }
+                } 
+                console.log( min );
+            }, 60000);
         } else {
-            // display the generated number without leading 0
-            timerMinutes.innerText = min;
+            clearInterval( progressMinutes );
         }
+    },
 
-        if( min != 1 ){
-            // output plural text
-            timerMinutesModal.innerText = ` ${min} minutes`;
-        } else {
-            // output singular text
-            timerMinutesModal.innerText = min;
-        }
-    }, 60000),
-
-
-    // stop timer and copy the timer progress to the modal
-    stopTime: function( intervalMinutes, intervalSeconds ){
-        let intervalArray = [ intervalMinutes, intervalSeconds ]
-        for( let interval of intervalArray ){
-            clearInterval( interval );
-        }
+    starStopTime: function( isPlaying ) {
+        Timer.secondsManager( isPlaying );
+        Timer.minutesManager( isPlaying );
     },
 
     // take 2 arguments corresponding to the html element for minutes and seconds
@@ -311,14 +337,22 @@ const Timer = {
         }
     },
 
+
     resetTimerText: function(){
+        // get elements to create an array
         let textArray = [ timerSeconds, timerSecondsModal, timerMinutes, timerMinutesModal  ];
 
+        // changes html text of elements on the array
         for( let text of textArray ){
             text.innerText = '00'
         }
-    }
+        // returns secons and minutes variables to 0
+        sec = 0;
+        min = 0;
+    },
 }
+
+// Timer.starStopTime( true );
 
 // restar the game with the modal button
 restartTheGame( restart );
