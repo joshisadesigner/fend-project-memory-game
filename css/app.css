@@ -291,3 +291,29 @@ h1 {
     box-shadow: 0 4px 6px rgba( 0, 0, 0, .5 );
     outline: none;
 }
+
+/* Small devices */
+@media (max-width: 768px) {
+  
+  .deck {
+    width: 288px;
+    min-height: 288px;
+  }
+  
+  .deck .card {
+    height: 50px;
+    width: 50px;
+  }
+  
+  .score-panel {
+    width: 220px;
+  }
+  
+  .deck .card.show {
+      font-size: 20px;
+  }
+  
+  .deck .card.match {
+      font-size: 20px;
+  }
+}
