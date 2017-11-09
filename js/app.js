@@ -284,7 +284,6 @@ const Timer = {
                 } else {
                     timerSecondsModal.innerText = sec;
                 }
-                console.log( sec );
             }, 1000 );
         } else {
             clearInterval( progressSeconds );
@@ -315,7 +314,6 @@ const Timer = {
                         timerMinutesModal.innerText = ` ${min} minutes`;
                     }
                 } 
-                console.log( min );
             }, 60000);
         } else {
             clearInterval( progressMinutes );
