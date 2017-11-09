@@ -22,6 +22,21 @@ const resetButton = document.getElementById('restartButton');
 // get start elements
 const stars = document.getElementById( 'stars' ).children;
 
+// get minutes element under deck
+const timerMinutes = document.getElementById( 'timer-minutes' );
+
+// get seconds element under deck
+const timerSeconds = document.getElementById( 'timer-seconds' );
+
+// get minutes element in modal
+const timerMinutesModal = document.getElementById( 'timer-minutes-modal' );
+
+// get seconds element in modal
+const timerSecondsModal = document.getElementById( 'timer-seconds-modal' );
+
+// Varible for timer numbers
+let num = 0;
+
 // Variable to store count of moves
 let moves = 0;
 
@@ -109,10 +124,9 @@ const Cards = {
                 if (card.classList.contains('match')) {
                     return;
                 } else {
-                    Cards.flipCard(card);
+                    this.flipCard(card);
                 }
-            });
-
+            }.bind(this) );
         }
 
     },
@@ -121,7 +135,7 @@ const Cards = {
 
         // Check if there are previous clicked cards
         if (cardsFlipped.length <= 1 && card.className !== 'card open show') {
-            
+
             incrementMoves();
 
             // Add open show classe to card icon
@@ -176,24 +190,29 @@ const Cards = {
 };
 
 function incrementMoves() {
+    // increment moves variable by one
     moves += 1;
+    // changes moves text on html
     movesElement.innerText = moves;
+    // changes ranking
     reduceRanking();
 }
+
 // Reduce ranking function
 function reduceRanking() {
+    // depending on how many moves the player has done change star appearing
     if ( moves === 32 ){
         stars[ 2 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
         console.log( ranking );
     }
-    
+
     if ( moves === 52 ){
         stars[ 1 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
         console.log( ranking );
     }
-    
+
     if ( moves === 82 ){
         stars[ 0 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
@@ -210,6 +229,8 @@ function gameWon() {
         movesResult.innerText = moves;
         // change stars text to starsRemain variable
         starsRemain.innerText = ranking;
+        // stop timer
+        Timer.stopTime( Timer.minutesInterval, Timer.secondsInterval );
     }
 }
 
@@ -219,40 +240,99 @@ function restartTheGame( e ){
         // reset star ranking
         // reset moves
         Cards.placeCards();
+        // stop timer
+        Timer.resetTimerText();
     });
 }
 
-const timerMinutes = document.getElementById( 'timer-minutes' );
-const timerSeconds = document.getElementById( 'timer-seconds' );
-
 const Timer = {
-
-    time: function( interval, element ){
-        let sec = 0;
-        setInterval( function(){
-            sec++;
-            if( sec > 59 ){ sec = 0 }
-
-            if( sec < 10 ){
-                element.innerText = `0${sec}`;
-            } else {
-                element.innerText = sec;
-            }
-        }, interval );
-    },
-    
-    minutesAndSeconds: function( elementMinutes, elementSecons){
-        this.time( 60000, elementMinutes );
-        this.time( 1000, elementSecons );
+    // take 2 arguments corresponding to the html element for minutes and seconds
+    timerRestart: function( elementMinutes, elementSecons ){
+        // create array with arguments
+        let elementArray = [ elementMinutes, elementSecons ]
+        // change html text for each element
+        for( var e of elementArray ){
+            e.innerText = '00'
+        }
     },
 
-    clearTimer: function(){
-        // clearInterval( setInterval );
+    timeProgress: function( element ){
+        // the number of the timer is updated
+        num++;
+        // if one second or minute have passed reset the num counter
+        if( num > 59 ){ num = 0 }
+
+        //add leading 0 when the number is unit
+        if( num < 10 ){
+            element.innerText = `0${num}`;
+        } else {
+            // display the generated number without leading 0
+            element.innerText = num;
+        }
     },
+
+    // outputs the minutes progress
+    minutesInterval: setInterval( function(){
+        Timer.timeProgress( timerMinutes );
+        let minutes = Number( timerMinutes.innerText )
+        if( minutes != 1 ){
+            timerMinutesModal.innerText = `${num} minutes`;
+        } else{
+            timerMinutesModal.innerText = num;
+        }
+    }, 60000 ),
+
+    // outputs the second progress
+    secondsInterval: setInterval( function(){
+        Timer.timeProgress( timerSeconds );
+        let seconds = Number( timerSeconds.innerText );
+        if( seconds != 1 ){
+            timerSecondsModal.innerText = `${num} seconds`;
+        } else {
+            timerSecondsModal.innerText = num;
+        }
+
+        // console.log( timerSeconds.innerText );
+    }, 1000 ),
+
+
+    // stop timer and copy the timer progress to the modal
+    stopTime: function( intervalMinutes, intervalSeconds ){
+        let intervalArray = [ intervalMinutes, intervalSeconds ]
+        for( let interval of intervalArray ){
+            clearInterval( interval );
+        }
+    },
+
+    resetTimerText: function(){
+        num = 0;
+        let textArray = [ timerSeconds, timerSecondsModal, timerMinutes, timerMinutesModal  ];
+
+        for( let text of textArray ){
+            text.innerText = '00'
+        }
+    }
 }
 
+
+
+// let letimer = setInterval( timeSeconds, 1000 );
+//
+// function timeSeconds(){
+//     sec++;
+//     if( sec > 59 ){ sec = 0 }
+//
+//     if( sec < 10 ){
+//         timerSeconds.innerText = `0${sec}`;
+//     } else {
+//         timerSeconds.innerText = sec;
+//     }
+// }
+
+// clearInterval(  );
+
 // call the timer
-Timer.minutesAndSeconds( timerMinutes, timerSeconds );
+// Timer.minutesAndSeconds( timerMinutes, timerSeconds );
 
 
 
