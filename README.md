@@ -1,20 +1,19 @@
 # Memory Game Project
 
-## Table of Contents
+## How to play this application
+
+• Clone or download the [repository](https://github.com/joshisadesigner/fend-project-memory-game.git)
+• Open `index.html` on your default browser.
 
 * [Instructions](#instructions)
 * [Contributing](#contributing)
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+When you open the application a game will be automatically started
 
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
-
-## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+• Turn over any two cards.
+• If the two cards dont match they will return to the original position.
+• Keep Turning card pairs.
+• Remember whats on each card.
+• The game is over when all the cards have been matched.
