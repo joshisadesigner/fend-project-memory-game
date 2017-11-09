@@ -227,7 +227,7 @@ function gameWon() {
         // change stars text to starsRemain variable
         starsRemain.innerText = ranking;
         // stop timer
-        Timer.stopTime( Timer.minutesInterval, Timer.secondsInterval );
+        Timer.stopTime( Timer.minutesIncrement, Timer.secondsIncrement );
     }
 }
 
@@ -250,55 +250,47 @@ let sec = 0;
 
 const Timer = {
 
-    secondsIncrement: function(){
-        setInterval( function(){ 
-            sec++; 
-            // if one second have passed reset the num counter
-            if( sec === 60 ){ sec = 0 }
-            
-            //add leading 0 when the number is unit
-            if( sec < 10 ){
-                timerSeconds.innerText = `0${sec}`;
-            } else {
-                // display the generated number without leading 0
-                timerSeconds.innerText = sec;
-            }
+    secondsIncrement: setInterval( function(){ 
+        sec++; 
+        // if one second have passed reset the num counter
+        if( sec === 60 ){ sec = 0 }
+        
+        //add leading 0 when the number is unit
+        if( sec < 10 ){
+            timerSeconds.innerText = `0${sec}`;
+        } else {
+            // display the generated number without leading 0
+            timerSeconds.innerText = sec;
+        }
 
-            if( sec != 1 ){
-                timerSecondsModal.innerText = `${sec} seconds`;
-            } else {
-                timerSecondsModal.innerText = sec;
-            }
-
-            console.log( sec ); 
-        }, 1000)
-    },
+        if( sec != 1 ){
+            timerSecondsModal.innerText = `${sec} seconds`;
+        } else {
+            timerSecondsModal.innerText = sec;
+        }
+    }, 1000),
     
-    MinutesIncrement: function(){
-        setInterval( function(){ 
-            min++; 
-            // if one minute have passed reset the num counter
-            if( min === 60 ){ min = 0 }
-            
-            //add leading 0 when the number is unit
-            if( min < 10 ){
-                timerMinutes.innerText = `0${min}`;
-            } else {
-                // display the generated number without leading 0
-                timerMinutes.innerText = min;
-            }
+    minutesIncrement: setInterval( function(){ 
+        min++; 
+        // if one minute have passed reset the num counter
+        if( min === 60 ){ min = 0 }
+        
+        //add leading 0 when the number is unit
+        if( min < 10 ){
+            timerMinutes.innerText = `0${min}`;
+        } else {
+            // display the generated number without leading 0
+            timerMinutes.innerText = min;
+        }
 
-            if( min != 1 ){
-                // output plural text
-                timerMinutesModal.innerText = `${min} minutes`;
-            } else {
-                // output singular text
-                timerMinutesModal.innerText = min;
-            }
-
-            console.log( min ); 
-        }, 60000)
-    },
+        if( min != 1 ){
+            // output plural text
+            timerMinutesModal.innerText = ` ${min} minutes`;
+        } else {
+            // output singular text
+            timerMinutesModal.innerText = min;
+        }
+    }, 60000),
 
 
     // stop timer and copy the timer progress to the modal
@@ -329,8 +321,6 @@ const Timer = {
         }
     }
 }
-Timer.secondsIncrement();
-Timer.MinutesIncrement();
 
 // restar the game with the modal button
 restartTheGame( restart );
