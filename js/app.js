@@ -147,8 +147,6 @@ const Cards = {
         // Check if there are previous clicked cards
         if (cardsFlipped.length <= 1 && card.className !== 'card open show') {
 
-            incrementMoves();
-
             // Add open show classe to card icon
             card.className += ' open show';
 
@@ -157,6 +155,9 @@ const Cards = {
 
             // if there are two card flipped check if they match or mismatch
             if (cardsFlipped.length === 2) {
+                
+                // increment moves
+                incrementMoves();
 
                 // Create variable that holds the class name of the childen of card elements
                 let cardOpenOne = cardsFlipped[0].childNodes[0].className;
@@ -201,12 +202,12 @@ const Cards = {
 };
 
 function incrementMoves() {
-    // increment moves variable by one
-    moves += 1;
-    // changes moves text on html
-    movesElement.innerText = moves;
-    // changes ranking
-    reduceRanking();
+        // increment moves variable by one
+        moves += 1;
+        // changes moves text on html
+        movesElement.innerText = moves;
+        // changes ranking
+        reduceRanking();
 }
 
 // Reduce ranking function
