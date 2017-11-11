@@ -39,7 +39,7 @@ let moves = 0;
 
 // Variable to store stars ranking
 // initial value of 3 stars
-let ranking = 3;
+let ranking;
 
 // Array variable to store flipped cards
 let cardsFlipped = [];
@@ -84,6 +84,7 @@ const Cards = {
         movesElement.innerText = 0;
 
         // reset stars
+        ranking = 3;
         for( let i = 0; i < stars.length; i++ ){
             stars[ i ].childNodes[ 0 ].className = 'fa fa-star';
         }
@@ -195,7 +196,7 @@ const Cards = {
             }
             // reset array of flipped card to continue playing
             cardsFlipped.length = 0;
-        }, 1000);
+        }, 250);
     },
 };
 
@@ -214,16 +215,19 @@ function reduceRanking() {
     if ( moves === 32 ){
         stars[ 2 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
+        console.log( stars[ 2 ].childNodes[ 0 ].className );
     }
 
     if ( moves === 52 ){
         stars[ 1 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
+        console.log( stars[ 1 ].childNodes[ 0 ].className );
     }
 
     if ( moves === 82 ){
         stars[ 0 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
+        console.log( stars[ 0 ].childNodes[ 0 ].className );
     }
 }
 
