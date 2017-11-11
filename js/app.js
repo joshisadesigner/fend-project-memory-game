@@ -37,6 +37,10 @@ const timerSecondsModal = document.getElementById( 'timer-seconds-modal' );
 // Variable to store count of moves
 let moves = 0;
 
+// Varible for timer numbers
+let min = 0;
+let sec = 0;
+
 // Variable to store stars ranking
 // initial value of 3 stars
 let ranking;
@@ -66,7 +70,23 @@ const symbolClasses = [
  *   - add each card's HTML to the page
  */
 
+
 const Cards = {
+    
+    /**
+     * @description starts of resets the game
+     *      1- Call the function `Timer.starStopTime` and receives true to initializa the timer
+     *      2- Empties `cardsFlipped` array.
+     *      3- Clears the `moves` variable to beging from 0
+     *      4- Hides modal by setting its css display property with value "none";
+     *      5- Sets text of moves deck element back to 0
+     *      6- Resets `ranking` back to 3 which is the number of stars
+     *      7- Resets the stars on the deck to 'fa fa-star' classes
+     *      8- Empties `match` array
+     *      9- Shuffles `symbolClasses` array which represents the icon in each card of the deck
+     *     10- Creates each card html element on the deck
+     *     11- Calls `Cards.cardEvent()`
+    */
     placeCards: function() {
         // star timer
         Timer.starStopTime( true );
@@ -123,6 +143,10 @@ const Cards = {
      *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
      */
 
+
+    /** 
+     * @description Represent the click event for the cards
+    */
     cardEvent: function() {
 
         // Iterate the existing cards
@@ -141,6 +165,11 @@ const Cards = {
         }
 
     },
+
+    /**
+     * @description Flips the cards on the deck and calls the animations for match or mismatch
+     * @param { html element } card
+     */
 
     flipCard: function(card) {
 
@@ -172,8 +201,12 @@ const Cards = {
         }
     },
 
+    /**
+     * @description Add match class to each flipped card and pushes the card to match array
+     */
+
     cardMatch: function() {
-        // add match class to each flipped card and pushes the card to match array
+
         for (let card of cardsFlipped) {
             card.className += ' match';
             match.push(card);
@@ -183,6 +216,10 @@ const Cards = {
         // reset array of flipped card to continue playing
         cardsFlipped.length = 0;
     },
+    
+    /**
+     * @description Add mismatch class to each flipped card and pushes the card to match array
+     */
 
     cardMismatch: function(arrayOfCards) {
         // add mismatch class to each flipped card
@@ -197,10 +234,14 @@ const Cards = {
             }
             // reset array of flipped card to continue playing
             cardsFlipped.length = 0;
-        }, 250);
+        }, 1000);
     },
 };
 
+/**
+ * @description Increments `moves` variable and writes its value to the html element on the deck
+ *              calls for the `reduceRanking()` function
+ */
 function incrementMoves() {
         // increment moves variable by one
         moves += 1;
@@ -210,7 +251,9 @@ function incrementMoves() {
         reduceRanking();
 }
 
-// Reduce ranking function
+/**
+ * @description Change the appearance of the stars representing the ranking on the deck.
+ */
 function reduceRanking() {
     // depending on how many moves the player has done change star appearing
     if ( moves === 12 ){
@@ -232,11 +275,17 @@ function reduceRanking() {
     }
 }
 
+/**
+ * @description Checks if the number of matched cards is equal to the number of existing cards
+ *              and clear the innerText of the modal minutes span if the minutes didn't change
+ */
 function gameWon() {
     // When all cards are matched and flipped
     if (match.length === cardElements.length) {
         // clear minutes in modal
-        timerMinutesModal.innerText = ``;
+        if( timerMinutesModal.innerText === '00') {
+            timerMinutesModal.innerText = ``;
+        }
         // reveal the modal window
         modal.style.display = 'block';
         // change result text to moves varible
@@ -249,6 +298,10 @@ function gameWon() {
     }
 }
 
+/**
+ * @description add click event to reset buttons on the deck and modal
+ * @param { htmk element } e 
+ */
 function restartTheGame( e ){
     e.addEventListener('click', function() {
         // stop timer
@@ -262,13 +315,12 @@ function restartTheGame( e ){
     });
 }
 
-// Varible for timer numbers
-let num = 0;
-let min = 0;
-let sec = 0;
-
 const Timer = {
 
+    /**
+     * @description Starts of Stops seconds
+     * @param { boolean } secondsFlag
+     */
     secondsManager: function( secondsFlag ){
         if( secondsFlag ){
             progressSeconds = setInterval( function(){ 
@@ -287,7 +339,7 @@ const Timer = {
                 if( sec != 1 ){
                     timerSecondsModal.innerText = `${sec} seconds`;
                 } else {
-                    timerSecondsModal.innerText = sec;
+                    timerSecondsModal.innerText = `${sec} second`;
                 }
             }, 1000 );
         } else {
@@ -295,6 +347,10 @@ const Timer = {
         }
     },
     
+    /**
+     * @description Starts of Stops minutes
+     * @param { boolean } minutesFlag
+     */
     minutesManager: function( minutesFlag ){
         if( minutesFlag ){
             progressMinutes = setInterval( function(){ 
@@ -324,25 +380,21 @@ const Timer = {
             clearInterval( progressMinutes );
         }
     },
-
+    
+    /**
+     * @description Triggers `secondsManager` and `minutesManager` sending the parameter to each of them
+     * @param { boolean } isPlaying
+     */
     starStopTime: function( isPlaying ) {
         Timer.secondsManager( isPlaying );
         Timer.minutesManager( isPlaying );
     },
 
-    // take 2 arguments corresponding to the html element for minutes and seconds
-    timerRestart: function( elementMinutes, elementSecons ){
-        // create array with arguments
-        let elementArray = [ elementMinutes, elementSecons ]
-        // change html text for each element
-        for( var e of elementArray ){
-            e.innerText = '00'
-        }
-    },
-
-
+    /**
+     * @description Creates an array of the timer html elements and writes '00' to them
+     */
     resetTimerText: function(){
-        // get elements to create an array
+        // take arguments corresponding to the html element for minutes and seconds
         let textArray = [ timerSeconds, timerSecondsModal, timerMinutes, timerMinutesModal  ];
 
         // changes html text of elements on the array
@@ -355,12 +407,14 @@ const Timer = {
     },
 }
 
-// Timer.starStopTime( true );
-
-// restar the game with the modal button
+/**
+ * @description Restar the game with the modal button
+ */
 restartTheGame( restart );
 
-// restar the game with deck button
+/**
+ * @description Restar the game with deck button
+ */
 restartTheGame( resetButton );
 
 // Shuffle cards everytime the page is reload
