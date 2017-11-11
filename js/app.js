@@ -55,6 +55,8 @@ let match = [];
 let progressSeconds;
 let progressMinutes;
 
+let clicksCount = 0;
+
 /*
  * Create a list that holds all of your cards
  */
@@ -75,9 +77,9 @@ const Cards = {
     
     /**
      * @description starts of resets the game
-     *      1- Call the function `Timer.starStopTime` and receives true to initializa the timer
-     *      2- Empties `cardsFlipped` array.
-     *      3- Clears the `moves` variable to beging from 0
+     *      1- Empties `cardsFlipped` array.
+     *      2- Clears the `moves` variable to beging from 0
+     *      3- Reset `clicksCount` back to 0
      *      4- Hides modal by setting its css display property with value "none";
      *      5- Sets text of moves deck element back to 0
      *      6- Resets `ranking` back to 3 which is the number of stars
@@ -88,14 +90,15 @@ const Cards = {
      *     11- Calls `Cards.cardEvent()`
     */
     placeCards: function() {
-        // star timer
-        Timer.starStopTime( true );
 
         // Clear any flipped card
         cardsFlipped = []
 
         //clear moves
         moves = 0;
+        
+        //clear clicks
+        clicksCount = 0;
         
         //hide modal for game won
         modal.style.display = "none";
@@ -154,12 +157,17 @@ const Cards = {
 
             // Add Event Listener to clicked card
             card.addEventListener('click', function() {
-
                 // if card element contains class match it is already flipped
                 if (card.classList.contains('match')) {
                     return;
                 } else {
                     this.flipCard(card);
+                }
+                // increments the number of clicks
+                clicksCount++;
+                // start the timer if number of clicks is 1
+                if( clicksCount === 1 ){
+                    Timer.starStopTime( true );
                 }
             }.bind(this) );
         }
@@ -292,8 +300,7 @@ function gameWon() {
         movesResult.innerText = moves;
         // change stars text to starsRemain variable
         starsRemain.innerText = ranking;
-
-        // Stop timer
+        // stop timer
         Timer.starStopTime( false );
     }
 }
@@ -304,14 +311,14 @@ function gameWon() {
  */
 function restartTheGame( e ){
     e.addEventListener('click', function() {
-        // stop timer
-        Timer.starStopTime( false );
         // flip cards to original position
         // reset star ranking
         // reset moves
         Cards.placeCards();
         // revert time to 0
         Timer.resetTimerText();
+        // stop timer
+        Timer.starStopTime( false );
     });
 }
 
@@ -325,6 +332,7 @@ const Timer = {
         if( secondsFlag ){
             progressSeconds = setInterval( function(){ 
                 sec++; 
+                console.log( sec );
                 // if one seconds have passed reset the num counter
                 if( sec === 60 ){ sec = 0 }
                 
@@ -344,6 +352,8 @@ const Timer = {
             }, 1000 );
         } else {
             clearInterval( progressSeconds );
+            // returns secons variables to 0
+            sec = 0;
         }
     },
     
@@ -378,6 +388,8 @@ const Timer = {
             }, 60000);
         } else {
             clearInterval( progressMinutes );
+            // returns minutes variables to 0
+            min = 0;
         }
     },
     
@@ -401,9 +413,6 @@ const Timer = {
         for( let text of textArray ){
             text.innerText = '00'
         }
-        // returns secons and minutes variables to 0
-        sec = 0;
-        min = 0;
     },
 }
 
