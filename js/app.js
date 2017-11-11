@@ -213,19 +213,19 @@ function incrementMoves() {
 // Reduce ranking function
 function reduceRanking() {
     // depending on how many moves the player has done change star appearing
-    if ( moves === 32 ){
+    if ( moves === 12 ){
         stars[ 2 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
         console.log( stars[ 2 ].childNodes[ 0 ].className );
     }
 
-    if ( moves === 52 ){
+    if ( moves === 18 ){
         stars[ 1 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
         console.log( stars[ 1 ].childNodes[ 0 ].className );
     }
 
-    if ( moves === 82 ){
+    if ( moves === 24 ){
         stars[ 0 ].childNodes[ 0 ].className += '-o';
         ranking -= 1;
         console.log( stars[ 0 ].childNodes[ 0 ].className );
